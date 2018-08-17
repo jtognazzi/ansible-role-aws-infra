@@ -1,8 +1,8 @@
 ---
 # tasks file for ansible-role-aws-infra
- name: upload SSH keys
- local_action:
-  module: ec2_key
+ - name: upload SSH keys
+    local_action:
+    module: ec2_key
     name: "{{ lookup('env', 'USER') }}"
     key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     state: present
