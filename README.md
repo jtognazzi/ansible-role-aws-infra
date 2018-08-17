@@ -12,11 +12,13 @@ Same as the requirements for AWS modules.
 Role Variables
 --------------
 
+~~~ yaml
 # Which DC to use
 aws_zone: null
 
 #
 ...
+~~~
 
 Example Playbook
 ----------------
