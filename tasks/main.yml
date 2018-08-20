@@ -37,7 +37,7 @@
 - name: add additional volume to VM
   local_action:
     module: ec2_vol
-    name: "{{ item.1.name | default('DATA-' + cs_instance_name + '-' + item.0|string) }}"
+    name: "{{ item.1.name | default('DATA-' + ec2.instance_ids|first + '-' + item.0|string) }}"
     instance: "{{ ec2.instance_ids|first }}"
     volume_size: "{{ item.1.volume_size }}"
     volume_type: "{{ item.1.volume_type }}"
