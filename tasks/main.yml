@@ -32,3 +32,17 @@
     assign_public_ip: yes    
   register: ec2
 
+- name: add additional volume to VM
+  local_action:
+    module: ec2_vol
+    name: "{{ item.1.name | default('DATA-' + cs_instance_name + '-' + item.0|string) }}"
+    instance: "{{ ec2.id }}"
+    volume_size: "{{ item.1.volume_size }}"
+    volume_type: "{{ item.1.volume_type }}"
+  with_indexed_items:
+   - "{{ aws_disks }}"
+
+- name: waiting for SSH connection
+  wait_for_connection:
+    delay: 10
+    timeout: 300
