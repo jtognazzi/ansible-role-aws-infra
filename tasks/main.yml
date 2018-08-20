@@ -11,6 +11,7 @@
 - name: Configure Security Group
   local_action:
     module: ec2_group
+    name: default
     description: "TODO Should be set from inventory"
     state: present
     rules: "{{ aws_firewall_rules }}"
@@ -18,14 +19,14 @@
 
 - debug:
     var: ec2_group
-    
+
 - name: create VM instance started
   local_action:
     module: ec2
     key_name: "{{ lookup('env', 'USER') }}"
     instance_type: "{{ aws_offering }}"
     image: "{{ aws_template }}"
-    group: "{{ ec2_group.group_id }}"
+    group_id: "{{ ec2_group.group_id }}"
     wait: true
     vpc_subnet_id: subnet-791fd312
     assign_public_ip: yes    
