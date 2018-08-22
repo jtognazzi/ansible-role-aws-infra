@@ -30,7 +30,8 @@
     wait: true
     vpc_subnet_id: subnet-791fd312
     assign_public_ip: yes    
-    count_tag: inventory_hostname
+    count_tag: 
+      Name: "{{ inventory_hostname }}"
     exact_count: 1
   register: ec2
 
