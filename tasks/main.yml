@@ -25,6 +25,8 @@
     module: ec2
     key_name: "{{ lookup('env', 'USER') }}"
     instance_type: "{{ aws_offering }}"
+    instance_tags:
+      Name: "{{ inventory_hostname }}"
     image: "{{ aws_template }}"
     group_id: "{{ ec2_group.group_id }}"
     wait: true
@@ -48,6 +50,7 @@
     instance: "{{ ec2.instance_ids|first }}"
     volume_size: "{{ item.1.volume_size }}"
     volume_type: "{{ item.1.volume_type }}"
+    delete_on_termination: yes
   with_indexed_items:
    - "{{ aws_disks }}"
 
