@@ -36,7 +36,7 @@
 
 - name: Allocate elastic IP
   local_action:
-    module: ec2-eip
+    module: ec2_eip
     public_ip: "{{ aws_public_ip }}"
     device_id: "{{ ec2.instance_ids|first }}"
 
