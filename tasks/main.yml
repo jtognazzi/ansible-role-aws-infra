@@ -37,7 +37,7 @@
     exact_count: 1
   register: ec2
 
-- block
+- block:
   - name: Allocate elastic IP
     local_action:
       module: ec2_eip
