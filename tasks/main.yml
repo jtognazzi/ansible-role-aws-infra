@@ -58,7 +58,7 @@
       volume_type: "{{ item.1.volume_type }}"
       delete_on_termination: yes
     with_indexed_items:
-   - "{{ aws_disks }}"
+    - "{{ aws_disks }}"
   when: ec2.changed
 
 - name: waiting for SSH connection
