@@ -37,22 +37,24 @@
     exact_count: 1
   register: ec2
 
-- name: Allocate elastic IP
-  local_action:
-    module: ec2_eip
-    public_ip: "{{ aws_public_ip }}"
-    device_id: "{{ ec2.instance_ids|first }}"
+- block
+  - name: Allocate elastic IP
+    local_action:
+      module: ec2_eip
+      public_ip: "{{ aws_public_ip }}"
+      device_id: "{{ ec2.instance_ids|first }}"
 
-- name: add additional volume to VM
-  local_action:
-    module: ec2_vol
-    name: "{{ item.1.name | default('DATA-' + ec2.instance_ids|first + '-' + item.0|string) }}"
-    instance: "{{ ec2.instance_ids|first }}"
-    volume_size: "{{ item.1.volume_size }}"
-    volume_type: "{{ item.1.volume_type }}"
-    delete_on_termination: yes
-  with_indexed_items:
+  - name: add additional volume to VM
+    local_action:
+      module: ec2_vol
+      name: "{{ item.1.name | default('DATA-' + ec2.instance_ids|first + '-' + item.0|string) }}"
+      instance: "{{ ec2.instance_ids|first }}"
+      volume_size: "{{ item.1.volume_size }}"
+      volume_type: "{{ item.1.volume_type }}"
+      delete_on_termination: yes
+    with_indexed_items:
    - "{{ aws_disks }}"
+  when: ec2.changed
 
 - name: waiting for SSH connection
   wait_for_connection:
