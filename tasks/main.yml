@@ -34,6 +34,12 @@
     exact_count: 1
   register: ec2
 
+- name: Allocate elastic IP
+  local_action:
+    module: ec2-eip
+    public_ip: "{{ aws_public_ip }}"
+    device_id: "{{ ec2.instance_ids|first }}"
+
 - name: add additional volume to VM
   local_action:
     module: ec2_vol
