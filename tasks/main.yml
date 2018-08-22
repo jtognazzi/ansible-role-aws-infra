@@ -3,6 +3,7 @@
 - name: upload SSH keys
   local_action:
     module: ec2_key
+    region: "{{ aws_region }}"
     name: "{{ lookup('env', 'USER') }}"
     key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     state: present
@@ -11,6 +12,7 @@
 - name: Configure Security Group
   local_action:
     module: ec2_group
+    region: "{{ aws_region }}"
     name: default
     description: "TODO Should be set from inventory"
     state: present
@@ -23,6 +25,7 @@
 - name: create VM instance started
   local_action:
     module: ec2
+    region: "{{ aws_region }}"
     key_name: "{{ lookup('env', 'USER') }}"
     instance_type: "{{ aws_offering }}"
     instance_tags:
@@ -41,13 +44,15 @@
   - name: Allocate elastic IP
     local_action:
       module: ec2_eip
+      region: "{{ aws_region }}"
       public_ip: "{{ aws_public_ip }}"
       device_id: "{{ ec2.instance_ids|first }}"
 
   - name: add additional volume to VM
     local_action:
       module: ec2_vol
-      name: "{{ item.1.name | default('DATA-' + ec2.instance_ids|first + '-' + item.0|string) }}"
+      region: "{{ aws_region }}"
+      name: "{{ item.1.name | default('inventory_dir|basename-' + inventory_hostname + '-' + item.0|string) }}"
       instance: "{{ ec2.instance_ids|first }}"
       volume_size: "{{ item.1.volume_size }}"
       volume_type: "{{ item.1.volume_type }}"

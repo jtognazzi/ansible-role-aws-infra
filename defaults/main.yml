@@ -1,2 +1,8 @@
 ---
 # defaults file for ansible-role-aws-infra
+aws_region: null
+aws_firewall_rules:  null
+aws_offering: null
+aws_template: null
+aws_public_ip: ""
+aws_disks: null
