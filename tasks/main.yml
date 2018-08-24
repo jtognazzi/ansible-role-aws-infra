@@ -45,8 +45,7 @@
     module: ec2_eip
     region: "{{ aws_region }}"
     public_ip: "{{ aws_public_ip }}"
-    device_id: "{{ ec2.instance_ids|first }}"
-  when: ec2.changed
+    device_id: "{{ ec2.tagged_instances[0].id }}"
 
 - name: add additional volume to VM
   local_action:
@@ -54,7 +53,7 @@
     region: "{{ aws_region }}"
     name: "{{ item.1.name | default(inventory_dir|basename + '-' + inventory_hostname + '-' + item.0|string) }}"
     device_name: "{{ item.1.device_name }}"
-    instance: "{{ ec2.instance_ids|first }}"
+    instance: "{{ ec2.tagged_instances[0].id }}"
     volume_size: "{{ item.1.volume_size }}"
     volume_type: "{{ item.1.volume_type }}"
     delete_on_termination: yes
