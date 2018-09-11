@@ -33,8 +33,8 @@
     image: "{{ aws_template }}"
     group_id: "{{ ec2_group.group_id }}"
     wait: true
-    vpc_subnet_id: subnet-791fd312
-    assign_public_ip: yes    
+    vpc_subnet_id: "{{ aws_subnet }}"
+    assign_public_ip: "{{ aws_assign_public_ip }}"
     count_tag: 
       Name: "{{ inventory_hostname }}"
     exact_count: 1
