@@ -13,7 +13,7 @@
   local_action:
     module: ec2_group
     region: "{{ aws_region }}"
-    vpc_id: "{{ aws_vpc }}"
+      vpc_id: "{{ aws_vpc }}"
     name: default
     description: "TODO Should be set from inventory"
     state: present
@@ -62,7 +62,7 @@
     delete_on_termination: yes
   with_indexed_items:
   - "{{ aws_disks }}"
-when: aws_disks not null
+  when: aws_disks not null
 
 
 - name: waiting for SSH connection
