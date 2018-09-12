@@ -46,6 +46,7 @@
     region: "{{ aws_region }}"
     public_ip: "{{ aws_public_ip }}"
     device_id: "{{ ec2.tagged_instances[0].id }}"
+  when: aws_assign_public_ip
 
 - name: add additional volume to VM
   local_action:
