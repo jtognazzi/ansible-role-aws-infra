@@ -1,6 +1,7 @@
 ---
 # defaults file for ansible-role-aws-infra
 aws_region: null
+aws_vpc: null
 aws_subnet: null
 aws_assign_public_ip: no
 aws_firewall_rules:  null

@@ -13,6 +13,7 @@
   local_action:
     module: ec2_group
     region: "{{ aws_region }}"
+    vpc_id: "{{ aws_vpc }}"
     name: default
     description: "TODO Should be set from inventory"
     state: present
@@ -20,7 +21,8 @@
   register: ec2_group
 
 - debug:
-    var: ec2_group
+    var: aws_assign_public_ip
+  when: aws_assign_public_ip
 
 - name: create VM instance started
   local_action:
@@ -60,6 +62,8 @@
     delete_on_termination: yes
   with_indexed_items:
   - "{{ aws_disks }}"
+when: aws_disks not null
+
 
 - name: waiting for SSH connection
   wait_for_connection:
