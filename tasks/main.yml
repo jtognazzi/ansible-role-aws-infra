@@ -20,10 +20,6 @@
     rules: "{{ aws_firewall_rules }}"
   register: ec2_group
 
-- debug:
-    var: aws_assign_public_ip
-  when: aws_assign_public_ip
-
 - name: create VM instance started
   local_action:
     module: ec2
@@ -41,6 +37,11 @@
       Name: "{{ inventory_hostname }}"
     exact_count: 1
   register: ec2
+
+- name: Set ansible_host to the allocated private IP
+  set_fact:
+    ansible_host: "{{ ec2.tagged_instances[0].private_ip }}"
+  when: not aws_assign_public_ip
 
 - name: Allocate elastic IP
   local_action:
@@ -62,7 +63,7 @@
     delete_on_termination: yes
   with_indexed_items:
   - "{{ aws_disks }}"
-  when: aws_disks not null
+  when: aws_disks is not none
 
 
 - name: waiting for SSH connection
