@@ -20,7 +20,7 @@
     rules: "{{ aws_firewall_rules }}"
   register: ec2_group
 
-- name: create VM instance started
+- name: create VM instance
   local_action:
     module: ec2
     region: "{{ aws_region }}"
@@ -37,6 +37,16 @@
       Name: "{{ inventory_hostname }}"
     exact_count: 1
   register: ec2
+
+- name: Make sure the VMs are running
+  local_action:
+    module: ec2
+    instance_ids: '{{ ec2.tagged_instances[0].id }}'
+    region: '{{ aws_region }}'
+    state: running
+    wait: True
+    vpc_subnet_id: "{{ aws_subnet }}"
+    assign_public_ip:  "{{ aws_assign_public_ip }}"
 
 - name: Set ansible_host to the allocated private IP
   set_fact:
