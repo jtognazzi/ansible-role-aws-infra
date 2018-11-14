@@ -65,7 +65,7 @@
   local_action:
     module: ec2_vol
     region: "{{ aws_region }}"
-    name: "{{ item.1.name | default(inventory_dir|basename + '-' + inventory_hostname + '-' + item.0|string) }}"
+    name: "{{ item.1.name | default(inventory_dir|basename + '-' + inventory_hostname + '-' + 'DATA-' + item.0|string) }}"
     device_name: "{{ item.1.device_name }}"
     instance: "{{ ec2.tagged_instances[0].id }}"
     volume_size: "{{ item.1.volume_size }}"
