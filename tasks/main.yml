@@ -14,8 +14,8 @@
     module: ec2_group
     region: "{{ aws_region }}"
     vpc_id: "{{ aws_vpc }}"
-    name: default
-    description: "TODO Should be set from inventory"
+    name: "{{ inventory_hostname }}-sg"
+    description: "Security Group created for {{ inventory_hostname }}"
     state: present
     rules: "{{ aws_firewall_rules }}"
   register: ec2_group
